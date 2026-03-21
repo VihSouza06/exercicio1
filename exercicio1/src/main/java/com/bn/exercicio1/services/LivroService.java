@@ -30,7 +30,10 @@ public class LivroService {
     }
 
     public LivroModel atualizarLivro(Long id, LivroModel livroModel){
-        LivroModel newLivroModel = livroRepository.findById(id).get();
-        return livroRepository.save(livroModel);
+        LivroModel novoLivro = livroRepository.findById(id).get();
+        novoLivro.setAutor(livroModel.getAutor());
+        novoLivro.setTitulo(livroModel.getTitulo());
+        novoLivro.setAnoPublicacao(livroModel.getAnoPublicacao());
+        return livroRepository.save(novoLivro);
     }
 }

@@ -20,16 +20,22 @@ public class LivroController {
 
     @GetMapping
     public ResponseEntity<List<LivroModel>>findAll(){
-        List<LivroModel> requeste = livroService.findAll();
-        return ResponseEntity.ok().body(requeste);
+        List<LivroModel> livros = livroService.findAll();
+        return ResponseEntity.ok().body(livros);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LivroModel> buscarLivroPorId(@PathVariable Long id){
+        LivroModel livro = livroService.buscarLivroPorId(id);
+        return ResponseEntity.ok(livro);
     }
 
     @PostMapping
     public ResponseEntity<LivroModel> criarLivro(@RequestBody LivroModel livroModel){
-        LivroModel requeste = livroService.criarLivro(livroModel);
+        LivroModel livroCriado = livroService.criarLivro(livroModel);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(livroModel.getId()).toUri();
-        return ResponseEntity.created(uri).body(requeste);
+        return ResponseEntity.created(uri).body(livroCriado);
     }
 
     @DeleteMapping("/{id}")
@@ -38,14 +44,11 @@ public class LivroController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public LivroModel buscarLivroPorId(@PathVariable Long id){
-        return livroService.buscarLivroPorId(id);
-    }
-
     @PutMapping("/{id}")
-    public LivroModel atualizarLivro(@PathVariable Long id, LivroModel livroModel){
-        return livroService.atualizarLivro(id, livroModel);
+    public ResponseEntity<LivroModel> atualizarLivro
+            (@PathVariable Long id, @RequestBody LivroModel livroModel){
+        LivroModel livroAtualizado = livroService.atualizarLivro(id, livroModel);
+        return ResponseEntity.ok(livroAtualizado);
     }
 
 }
